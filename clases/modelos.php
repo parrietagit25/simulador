@@ -29,6 +29,7 @@ class ModelGlobal extends Conexion {
     return $rows;
   }
 
+
   public function agregar($tabla, $datos) {
     
     $columnas = implode(", ", array_keys($datos));

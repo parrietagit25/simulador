@@ -11,7 +11,7 @@ class Simulacion{
 
         $this->ModelGlobal = new ModelGlobal();
         $this->tabla_VwFlotaAutosAF = "VwFlotaAutosAF";
-        $this->tabla_VwFlotaAutosAF_vendidas = "VwFlotaAutosAF";
+        $this->tabla_VwFlotaAutosAF_vendidas = "VwFlotaAutosAFVendidos";
 
     }
 
@@ -27,5 +27,8 @@ class Simulacion{
         return $this->ModelGlobal->datosUnidadId($this->tabla_VwFlotaAutosAF, $id);
     }
 
+    public function DatosUnidadIdVendida($id){
+        return $this->ModelGlobal->datosUnidadId($this->tabla_VwFlotaAutosAF_vendidas, $id);
+    }
 
 }

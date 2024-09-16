@@ -9,8 +9,510 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
     <link href="https://getbootstrap.com/docs/5.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        select {
+            background-color: white !important;
+            color: black !important;
+            border: 1px solid #ccc;
+        }
+
+        option {
+            background-color: white;
+            color: black;
+        }
+
+    </style>
 </head>
 <body>
+
+<div class="container-fluid text-left" style="border: solid 1px #df3232; padding:20px;">
+    <div class="row d-flex flex-wrap">
+
+        <div class="col-lg-3 col-md-6 col-sm-12" style="border: solid 1px #df3232; padding:20px;">
+            <label for="">Unidad</label>
+            <select style="color:black !important" class="form-control autos" id="select2-input" onchange="seleccionar_auto()">
+                <option value="">Seleccionar</option>
+                <?php 
+                    $todos_autos_instance = new Simulacion();
+                    $autos = $todos_autos_instance->TodasUnidades();
+                    foreach ($autos as $key => $value) { ?>
+                        <option value="<?php echo $value['Unidad']; ?>" style="color:black !important"><?php echo $value['Meses'].'M '.$value['Unidad'].' - '.$value['Kilometraje']. ' KM'; ?></option>
+                <?php } ?>
+            </select>
+            <br>
+            <h2>Simulación BI Ficha</h2>
+            <div class="primera">
+                <table class="table">
+                    <tr>
+                        <td>Meses Flota</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Modelo</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>KM</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Costo auto</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Costo auto con Impuestos</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Dias Rental</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Tipo Venta</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Dias FS</td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>Ingresos</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Ingreso alquiler</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Otros ingresos</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Total Ingreso</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Revenue Mensual</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Revenue Per Day</td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>Costos / Otros</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Total Costos</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Intereses</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Seguro</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Depreciacion</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Gasto Administrativos</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Total costo y gastos</td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>Contrib. Contable Neta</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Precio Venta Estimado</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Total Contribu. Contable Estimado</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>% Margen Retorno Inversión Estimado</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>% Margen Retorno Mensual Estimado (MRM)</td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-sm-12" style="border: solid 1px #df3232; padding:20px;">
+            <label for=""></label>
+            <br>
+            <h2>Simulación Ingreso por Alquiler</h2>
+            <div class="segunda">
+                <table class="table">
+                    <tr>
+                        <td>Meses Flota</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Modelo</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>KM</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Costo auto</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Costo auto con Impuestos</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Dias Rental</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Tipo Venta</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Dias FS</td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>Ingresos</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Ingreso alquiler</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Otros ingresos</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Total Ingreso</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Revenue Mensual</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Revenue Per Day</td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>Costos / Otros</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Total Costos</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Intereses</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Seguro</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Depreciacion</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Gasto Administrativos</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Total costo y gastos</td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>Contrib. Contable Neta</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Precio Venta Estimado</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Total Contribu. Contable Estimado</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>% Margen Retorno Inversión Estimado</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>% Margen Retorno Mensual Estimado (MRM)</td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-sm-12" style="border: solid 1px #df3232; padding:20px;">
+            <label for=""></label>
+            <br>
+            <h2>Simulación Múltiple</h2>
+            <div class="tercera">
+                <table class="table">
+                    <tr>
+                        <td>Meses Flota</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Modelo</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>KM</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Costo auto</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Costo auto con impuesto</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Precio Flota Actual</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Dias Rental</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Dias FS</td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>Ingresos</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Ingreso alquiler</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Otros ingresos</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Total Ingreso</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Revenue Mensual</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Revenue Per Day</td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>Costos / Otros</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Total Costos</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Intereses</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Seguro</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Depreciacion</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Gasto Administrativos</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Accesorios</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Total costo y gastos</td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>Contrib. Contable Neta</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Precio Venta Estimado</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Total Contribu. Contable Estimado</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>% Margen Retorno Inversión Estimado</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>% Margen Retorno Mensual Estimado (MRM)</td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-sm-12" style="border: solid 1px #df3232; padding:20px;">
+            <label for="">Unidad</label>
+            <select style="color:black !important" class="form-control autos_historico" onchange="seleccionar_auto_historico()">
+                <option value="">Seleccionar</option>
+                <?php 
+                    $todos_autos_historico = new Simulacion();
+                    $autos = $todos_autos_historico->TodasUnidadesVendidas();
+                    foreach ($autos as $key => $value) { ?>
+                        <option value="<?php echo $value['Unidad']; ?>" style="color:black !important"><?php echo $value['Meses'].'M '.$value['Unidad'].' - '.$value['Kilometraje']. ' KM'; ?></option>
+                <?php } ?>
+            </select>
+            <br>
+            <h2>Histórico PCR</h2>
+            <div class="cuarta">
+                <table class="table">
+                    <tr>
+                        <td>Meses Flota</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Modelo</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>KM</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Costo auto</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Costo auto con impuesto</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Dias Rental</td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>Fecha de Venta</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Ingreso alquiler</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Otros ingresos</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Total Ingreso</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Revenue Mensual</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Revenue Per Day</td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>Costos / Otros</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Total Costos</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Intereses</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Seguro</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Depreciacion</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Gasto Administrativos</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Total costo y gastos</td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>Contrib. Contable Neta</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Precio Venta</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Total Contribu. Contable Estimado</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>% Margen Retorno Inversión Estimado</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>% Margen Retorno Mensual Estimado (MRM)</td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+                        <!---
     <div class=" text-left" style="border: solid 1px #df3232; padding:20px; width:100%;">
         <div class="row">
 
@@ -271,119 +773,107 @@
                 
                 <h2>Simulación Múltiple</h2>
                 <div class="tercera">
-                    <table class="table">
-                        <tr>
-                            <td>Meses Flota</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Modelo</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>KM</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Costo auto</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Costo auto con impuesto</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Precio Flota Actual</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Dias Rental</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Dias FS</td>
-                            <td></td>
-                        </tr>
+                <table class="table">
+                    <tr>
+                        <td>Meses Flota</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Modelo</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>KM</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Costo auto</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Costo auto con impuesto</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Dias Rental</td>
+                        <td></td>
+                    </tr>
 
-                        <tr>
-                            <td>Ingresos</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Ingreso alquiler</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Otros ingresos</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Total Ingreso</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Revenue Mensual</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Revenue Per Day</td>
-                            <td></td>
-                        </tr>
+                    <tr>
+                        <td>Fecha de Venta</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Ingreso alquiler</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Otros ingresos</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Total Ingreso</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Revenue Mensual</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Revenue Per Day</td>
+                        <td></td>
+                    </tr>
 
-                        <tr>
-                            <td>Costos / Otros</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Total Costos</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Intereses</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Seguro</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Depreciacion</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Gasto Administrativos</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Accesorios</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Total costo y gastos</td>
-                            <td></td>
-                        </tr>
+                    <tr>
+                        <td>Costos / Otros</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Total Costos</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Intereses</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Seguro</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Depreciacion</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Gasto Administrativos</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Total costo y gastos</td>
+                        <td></td>
+                    </tr>
 
-                        <tr>
-                            <td>Contrib. Contable Neta</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Precio Venta Estimado</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Total Contribu. Contable Estimado</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>% Margen Retorno Inversión Estimado</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>% Margen Retorno Mensual Estimado (MRM)</td>
-                            <td></td>
-                        </tr>
-                    </table>
+                    <tr>
+                        <td>Contrib. Contable Neta</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Precio Venta</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Total Contribu. Contable Estimado</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>% Margen Retorno Inversión Estimado</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>% Margen Retorno Mensual Estimado (MRM)</td>
+                        <td></td>
+                    </tr>
+                </table>
                 </div>
             </div>
 
@@ -509,7 +999,7 @@
             </div>
         </div>
 
-    </div>
+    </div> -->
     <script src="https://getbootstrap.com/docs/5.3/assets/js/color-modes.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -519,6 +1009,11 @@
                 placeholder: 'Seleccione una opción',
                 allowClear: true
             });
+        });
+
+        $('.autos_historico').select2({
+            placeholder: 'Seleccione una opción',
+            allowClear: true
         });
 
         async function seleccionar_auto() {
@@ -750,6 +1245,30 @@
             setVal("#t3_margen_retorno_inversion", getVal("#t3_cont_con_est") / getVal("#t3_precio_flota_actual")); /** k39 */
             setVal("#t3_margen_retorno_mensual_estimado", getVal("#t3_margen_retorno_inversion") / getVal("#t3_meses_flota")); /** K41 */ 
             
+        }
+
+        async function seleccionar_auto_historico() {
+
+            let id_auto_primera = document.querySelector(".autos_historico").value;
+
+            try {
+                const formData1 = new FormData();
+                formData1.append('id_auto_primera', id_auto_primera);
+                formData1.append('tabla', 4);
+
+                const response1 = await fetch('datos.php', {
+                    method: 'POST',
+                    body: formData1
+                });
+                if (!response1.ok) {
+                    throw new Error('Error en la respuesta del servidor para la primera petición');
+                }
+                const data1 = await response1.text();
+                document.querySelector(".cuarta").innerHTML = data1;
+            } catch (error) {
+                console.error('Error en la primera petición:', error.message);
+            }
+
         }
 
 
