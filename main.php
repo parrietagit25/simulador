@@ -36,7 +36,7 @@
                     $todos_autos_instance = new Simulacion();
                     $autos = $todos_autos_instance->TodasUnidades();
                     foreach ($autos as $key => $value) { ?>
-                        <option value="<?php echo $value['Unidad']; ?>" style="color:black !important"><?php echo $value['Meses'].'M '.$value['Unidad'].' - '.$value['Kilometraje']. ' KM'; ?></option>
+                        <option value="<?php echo $value['Unidad']; ?>" style="color:black !important"><?php echo $value['Meses'].'M '.$value['Unidad'].' - '.$value['Kilometraje']. ' KM ' . $value['Company']. ' '.$value['CustomerFirstName'].' '.$value['CustomerLastName']; ?></option>
                 <?php } ?>
             </select>
             <br>

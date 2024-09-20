@@ -10,7 +10,7 @@ class Simulacion{
     public function __construct() {
 
         $this->ModelGlobal = new ModelGlobal();
-        $this->tabla_VwFlotaAutosAF = "VwFlotaAutosAF";
+        $this->tabla_VwFlotaAutosAF = "VwFlotaAutosAF_Customer";
         $this->tabla_VwFlotaAutosAF_vendidas = "VwFlotaAutosAFVendidos";
 
     }
