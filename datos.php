@@ -41,6 +41,9 @@
             $precioVenta = number_format($value['PRECIOVENTA'], 2, '.', '');
             $totalContribucionContable = number_format($value['TotalContribucionContable'], 2, '.', '');
             $margenRetorno = number_format($value['MargenRetorno'], 2, '.', '');
+
+            $reveneu_mensual = $suma_total_ingreso / $meses;
+            $revenue_per_day = $suma_total_ingreso / $diasRental;
             
             ?>
 
@@ -93,16 +96,16 @@
                 </tr>
                 <tr>
                     <td>Revenue Mensual</td>
-                    <td><?php echo $margenRetornoMensual; ?></td>
+                    <td><?php echo $reveneu_mensual; ?></td>
                 </tr>
                 <tr>
                     <td>Revenue Per Day</td>
-                    <td><?php echo $diasFS; ?></td>
+                    <td><?php echo $revenue_per_day; ?></td>
                 </tr>
 
                 <tr>
-                    <td>Costos / Otros</td>
-                    <td><?php echo $otrosCostos; ?></td>
+                    <td>Costos</td>
+                    <td><?php // echo $otrosCostos; ?></td>
                 </tr>
                 <tr>
                     <td>Total Costos</td>
@@ -222,8 +225,8 @@
                 </tr>
 
                 <tr>
-                    <td>Costos / Otros</td>
-                    <td><?php echo number_format($value['OtrosCostos'], 2, '.', ''); ?></td>
+                    <td>Costos </td>
+                    <td><?php //echo number_format($value['OtrosCostos'], 2, '.', ''); ?></td>
                 </tr>
                 <tr>
                     <td>Total Costos</td>
@@ -336,8 +339,8 @@
                 </tr>
 
                 <tr>
-                    <td>Costos / Otros</td>
-                    <td><?php echo number_format($value['OtrosCostos'], 2, '.', ''); ?></td>
+                    <td>Costos</td>
+                    <td><?php //echo number_format($value['OtrosCostos'], 2, '.', ''); ?></td>
                 </tr>
                 <tr>
                     <td>Total Costos</td>
@@ -452,8 +455,8 @@
                 </tr>
 
                 <tr>
-                    <td>Costos / Otros</td>
-                    <td><?php echo number_format($value['OtrosCostos'], 2, '.', ''); ?></td>
+                    <td>Costos </td>
+                    <td><?php //echo number_format($value['OtrosCostos'], 2, '.', ''); ?></td>
                 </tr>
                 <tr>
                     <td>Total Costos</td>

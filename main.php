@@ -400,7 +400,7 @@
                     $todos_autos_historico = new Simulacion();
                     $autos = $todos_autos_historico->TodasUnidadesVendidas();
                     foreach ($autos as $key => $value) { ?>
-                        <option value="<?php echo $value['Unidad']; ?>" style="color:black !important"><?php echo $value['Meses'].'M '.$value['Unidad'].' - '.$value['Kilometraje']. ' KM'; ?></option>
+                        <option value="<?php echo $value['Unidad']; ?>" style="color:black !important"><?php echo $value['Meses'].'M '.$value['Unidad'].' - '.$value['Kilometraje']. ' KM'.' - '.$value['Modelo']; ?></option>
                 <?php } ?>
             </select>
             <br>
