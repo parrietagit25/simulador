@@ -5939,3 +5939,27 @@ Stack trace:
 [20-Sep-2024 19:08:41 UTC] PHP Warning:  Undefined array key "CustomerLastName" in C:\inetpub\wwwroot\simulador\main.php on line 39
 [20-Sep-2024 19:08:41 UTC] PHP Warning:  Undefined array key "CustomerFirstName" in C:\inetpub\wwwroot\simulador\main.php on line 39
 [20-Sep-2024 19:08:41 UTC] PHP Warning:  Undefined array key "CustomerLastName" in C:\inetpub\wwwroot\simulador\main.php on line 39
+[24-Feb-2025 02:38:53 UTC] PHP Fatal error:  Uncaught TypeError: number_format(): Argument #2 ($decimals) must be of type int, string given in C:\inetpub\wwwroot\simulador\datos.php:438
+Stack trace:
+#0 C:\inetpub\wwwroot\simulador\datos.php(438): number_format()
+#1 {main}
+  thrown in C:\inetpub\wwwroot\simulador\datos.php on line 438
+[24-Feb-2025 02:55:01 UTC] PHP Warning:  A non-numeric value encountered in C:\inetpub\wwwroot\simulador\datos.php on line 43
+[24-Feb-2025 03:01:16 UTC] PHP Warning:  A non-numeric value encountered in C:\inetpub\wwwroot\simulador\datos.php on line 42
+[24-Feb-2025 03:01:16 UTC] PHP Warning:  A non-numeric value encountered in C:\inetpub\wwwroot\simulador\datos.php on line 42
+[24-Feb-2025 03:01:16 UTC] PHP Warning:  A non-numeric value encountered in C:\inetpub\wwwroot\simulador\datos.php on line 46
+[24-Feb-2025 03:01:16 UTC] PHP Warning:  A non-numeric value encountered in C:\inetpub\wwwroot\simulador\datos.php on line 47
+[24-Feb-2025 03:01:26 UTC] PHP Warning:  A non-numeric value encountered in C:\inetpub\wwwroot\simulador\datos.php on line 42
+[24-Feb-2025 03:01:26 UTC] PHP Warning:  A non-numeric value encountered in C:\inetpub\wwwroot\simulador\datos.php on line 46
+[24-Feb-2025 03:01:26 UTC] PHP Warning:  A non-numeric value encountered in C:\inetpub\wwwroot\simulador\datos.php on line 47
+[24-Feb-2025 03:10:33 UTC] PHP Warning:  A non-numeric value encountered in C:\inetpub\wwwroot\simulador\datos.php on line 52
+[24-Feb-2025 03:10:33 UTC] PHP Warning:  A non-numeric value encountered in C:\inetpub\wwwroot\simulador\datos.php on line 52
+[24-Feb-2025 03:10:33 UTC] PHP Warning:  A non-numeric value encountered in C:\inetpub\wwwroot\simulador\datos.php on line 52
+[24-Feb-2025 03:10:33 UTC] PHP Warning:  A non-numeric value encountered in C:\inetpub\wwwroot\simulador\datos.php on line 52
+[24-Feb-2025 03:10:33 UTC] PHP Warning:  A non-numeric value encountered in C:\inetpub\wwwroot\simulador\datos.php on line 52
+[24-Feb-2025 03:10:33 UTC] PHP Warning:  A non-numeric value encountered in C:\inetpub\wwwroot\simulador\datos.php on line 52
+[24-Feb-2025 03:25:50 UTC] PHP Warning:  A non-numeric value encountered in C:\inetpub\wwwroot\simulador\datos.php on line 62
+[24-Feb-2025 03:25:50 UTC] PHP Warning:  A non-numeric value encountered in C:\inetpub\wwwroot\simulador\datos.php on line 64
+[24-Feb-2025 03:59:44 UTC] PHP Warning:  A non-numeric value encountered in C:\inetpub\wwwroot\simulador\datos.php on line 201
+[24-Feb-2025 04:29:38 UTC] PHP Warning:  A non-numeric value encountered in C:\inetpub\wwwroot\simulador\datos.php on line 244
+[24-Feb-2025 04:32:02 UTC] PHP Warning:  A non-numeric value encountered in C:\inetpub\wwwroot\simulador\datos.php on line 244

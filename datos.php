@@ -26,24 +26,45 @@
             $dias_fs = $value['DiasFS'];
 
             $ingresosAlquiler = number_format($value['TotaldeIngresos'], 2, '.', ',');
-            $ingresosVtaAuto = number_format($value['IngresosVtaAuto'], 2, '.', '');
-            $suma_total_ingreso = number_format($value['TotaldeIngresos'] + $value['IngresosVtaAuto'], 2, '.', '');
-            $margenRetornoMensual = number_format($value['MargenRetornoMensual'], 2, '.', '');
-            $diasFS = number_format($value['DiasFS'], 2, '.', '');
-            $otrosCostos = number_format($value['OtrosCostos'], 2, '.', '');
-            $totalCostos = number_format($value['TOTALCOSTOS'], 2, '.', '');
-            $intereses = number_format($value['Intereses'], 2, '.', '');
-            $seguro = number_format($value['Seguro'], 2, '.', '');
-            $depreciacionAcumulada = number_format($value['DEPRECIACIONACUMULADA'], 2, '.', '');
-            $gastoAdmon = number_format($value['GastoAdmon'], 2, '.', '');
-            $total_costos_gastos = number_format($value['OtrosCostos'] + $value['TOTALCOSTOS'] + $value['Intereses'] + $value['Seguro'] + $value['DEPRECIACIONACUMULADA'] + $value['GastoAdmon'], 2, '.', '');
-            $contribucionContable = number_format($value['ContribucionContable'], 2, '.', '');
-            $precioVenta = number_format($value['PRECIOVENTA'], 2, '.', '');
-            $totalContribucionContable = number_format($value['TotalContribucionContable'], 2, '.', '');
-            $margenRetorno = number_format($value['MargenRetorno'], 2, '.', '');
+            $ingresosVtaAuto = number_format($value['IngresosVtaAuto'], 2, '.', ',');
+            $suma_total_ingreso = number_format($value['TotaldeIngresos'] + $value['IngresosVtaAuto'], 2, '.', ',');
+            $margenRetornoMensual = number_format($value['MargenRetornoMensual'], 2, '.', ',');
+            $diasFS = number_format($value['DiasFS'], 2, '.', ',');
+            $otrosCostos = number_format($value['OtrosCostos'], 2, '.', ',');
+            $totalCostos = number_format($value['TOTALCOSTOS'], 2, '.', ',');
+            $intereses = number_format($value['Intereses'], 2, '.', ',');
+            $seguro = number_format($value['Seguro'], 2, '.', ',');
+            $depreciacionAcumulada = number_format($value['DEPRECIACIONACUMULADA'], 2, '.', ',');
+            $gastoAdmon = number_format($value['GastoAdmon'], 2, '.', ',');
+            $total_costos_gastos = number_format($value['OtrosCostos'] + $value['TOTALCOSTOS'] + $value['Intereses'] + $value['Seguro'] + $value['DEPRECIACIONACUMULADA'] + $value['GastoAdmon'], 2, '.', ',');
+            $contribucionContable = number_format($value['ContribucionContable'], 2, '.', ',');
+            $precioVenta = number_format($value['PRECIOVENTA'], 2, '.', ',');
+            $totalContribucionContable = number_format((float)$contribucionContable + (float)$precioVenta, 2, '.', ',');
+            $margenRetorno = number_format($totalContribucionContable / $value['CostoVehiculo'], 2, '.', ','); //$value['MargenRetorno']
+            $margenRetornoMensual = number_format($margenRetorno / $meses, 2, '.', ',');
 
-            $reveneu_mensual = $suma_total_ingreso / $meses;
-            $revenue_per_day = $suma_total_ingreso / $diasRental;
+            $reveneu_mensual = $meses > 0 ? number_format((float)$suma_total_ingreso / (float)$meses, 2, '.', ',') : '0.00'; //esta es la linea 46
+            $revenue_per_day = $diasRental > 0 ? number_format((float)$suma_total_ingreso / (float)$diasRental, 2, '.', ',') : '0.00'; //esta es la linea 47
+
+            $reveneu_mensual = number_format($reveneu_mensual, 2, '.', ',');
+            $revenue_per_day = number_format($revenue_per_day, 2, '.', ',');
+
+            // para calcular el cashflow
+            $suma_total_ingreso = is_numeric($suma_total_ingreso) ? (float)$suma_total_ingreso : 0;
+            $precioVenta = is_numeric($precioVenta) ? (float)$precioVenta : 0;
+            $totalCostos = is_numeric($totalCostos) ? (float)$totalCostos : 0;
+            $intereses = is_numeric($intereses) ? (float)$intereses : 0;
+            $seguro = is_numeric($seguro) ? (float)$seguro : 0;
+            $gastoAdmon = is_numeric($gastoAdmon) ? (float)$gastoAdmon : 0;
+            $costoVehiculo = is_numeric($value['CostoVehiculo']) ? (float)$value['CostoVehiculo'] : 0;
+            $itbms = is_numeric($value['ITBM']) ? (float)$value['ITBM'] : 0;
+
+            $cashflow = ($suma_total_ingreso + $precioVenta) - ($totalCostos + $intereses + $seguro + $gastoAdmon + $costoVehiculo + $itbms);
+            $cashflow = number_format((float)$cashflow, 2, '.', ',');
+            $costo_auto_impuesto = number_format($costoVehiculo + $itbms, 2, '.', ',');
+            $costoVehiculo = number_format($costoVehiculo, 2, '.', ',');
+
+
             
             ?>
 
@@ -63,6 +84,10 @@
                 <tr>
                     <td>Costo auto</td>
                     <td><?php echo '$ '.$costoVehiculo; ?></td>
+                </tr>
+                <tr>
+                    <td>Costo auto con impuesto</td>
+                    <td><?php echo '$ '.$costo_auto_impuesto; ?></td>
                 </tr>
                 <tr>
                     <td>Dias Rental</td>
@@ -138,7 +163,7 @@
                 </tr>
                 <tr>
                     <td>Precio Venta Estimado</td>
-                    <td><input id="t1_pr_ven" onkeyup="simulacion_bi_ficha()" value="<?php echo $precioVenta; ?>" class="form-control"></td>
+                    <td><input id="t1_pr_ven" onkeyup="simulacion_bi_ficha()" value="<?php echo number_format($value['PRECIOVENTA'], 2, '.', ','); ?>" class="form-control"></td>
                 </tr>
                 <tr>
                     <td>Total Contribu. Contable Estimado</td>
@@ -146,11 +171,15 @@
                 </tr>
                 <tr>
                     <td>% Margen Retorno Inversión Estimado</td>
-                    <td><?php echo $margenRetorno; ?></td>
+                    <td><?php echo $margenRetorno; ?> %</td>
                 </tr>
                 <tr>
                     <td>% Margen Retorno Mensual Estimado (MRM)</td>
-                    <td><?php echo $margenRetornoMensual; ?></td>
+                    <td><?php echo $margenRetornoMensual; ?> %</td>
+                </tr>
+                <tr>
+                    <td>Cashflow</td>
+                    <td><b><?php echo '$ ' . $cashflow; ?></b></td>
                 </tr>
             </table>
     <?php } 
@@ -158,12 +187,6 @@
     }elseif (isset($_POST['tabla']) && $_POST['tabla'] ==2) {
     
         foreach ($autos_id as $key => $value) { 
-
-            /* 
-            echo '<pre>';
-            echo var_dump($value);
-            echo '</pre>';*/
-            
             
             $total_costos_gastos = $value['OtrosCostos'] + $value['TOTALCOSTOS'] + $value['Intereses'] + $value['Seguro'] + $value['DEPRECIACIONACUMULADA'] + $value['GastoAdmon'];
             $margen_retorno_inversion = $value['MargenRetorno'] * $value['MargenRetornoMensual'];
@@ -173,6 +196,11 @@
             $total_ingresos = $ingreso_alquiler + $value['IngresosVtaAuto'];
             $revenue_mensual = $ingreso_alquiler / $value['Meses']; 
             $revenue_per_day = $total_ingresos / $value['DiasRental'];
+
+            $suma_total_ingreso = number_format($value['TotaldeIngresos'] + $value['IngresosVtaAuto'], 2, '.', ',');
+            $suma_total_ingreso = number_format((float)$suma_total_ingreso, 2, '.', ',');
+            $cashflow = ($suma_total_ingreso + $value['PRECIOVENTA']) - ($value['TOTALCOSTOS'] + $value['Intereses'] + $value['Seguro'] + $value['GastoAdmon'] + $value['CostoVehiculo'] + $value['ITBM']);
+            $cashflow = number_format((float)$cashflow, 2, '.', ',');
 
             ?>
 
@@ -191,7 +219,11 @@
                 </tr>
                 <tr>
                     <td>Costo auto</td>
-                    <td><input type="text" value="<?php echo number_format($value['CostoVehiculo'], 2, '.', ''); ?>" class="form-control" id="t2_costo_auto"></td>
+                    <td><input type="text" value="<?php echo number_format($value['CostoVehiculo'], 2, '.', ','); ?>" class="form-control" id="t2_costo_auto"></td>
+                </tr>
+                <tr>
+                    <td>Costo auto con impuesto</td>
+                    <td><?php echo '$ '.number_format($value['CostoVehiculo']+$value['ITBM'], 2, '.', ','); ?></td>
                 </tr>
                 <tr>
                     <td>Dias Rental</td>
@@ -203,84 +235,113 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <td>Ingreso alquiler</td>
-                    <td><input id="t2_ingreso_alquiler" class="form-control" readonly type="text" value="<?php echo number_format($value['IngresosAlquiler'], 2, '.', ''); //number_format($ingreso_alquiler, 2, '.', ''); ?>" ></td>
+                    <td>Ingreso alquiler</td> 
+
+                    <?php $contribucion_contable_neta = $value['TotalContribucionContable'] - $value['PRECIOVENTA']; ?>
+                    <?php $total_costos_gastos = $value['OtrosCostos'] + $value['TOTALCOSTOS'] + $value['Intereses'] + $value['Seguro'] + $value['DEPRECIACIONACUMULADA'] + $value['GastoAdmon']; ?>
+                    <?php //$total_costos_gastos = number_format($total_costos_gastos, 2, '.', ','); ?>
+
+                    <td><input id="t2_ingreso_alquiler" class="form-control" readonly type="text" value="<?php echo number_format($total_costos_gastos+$contribucion_contable_neta, 2, '.', ','); ?>" ></td>
                 </tr>
                 <tr>
                     <td>Otros ingresos</td>
-                    <td><input id="t2_otros_ingresos" class="form-control" readonly type="text" value="<?php echo number_format($value['IngresosVtaAuto'], 2, '.', ''); ?>" ></td>
+                    <td><input id="t2_otros_ingresos" class="form-control" readonly type="text" value="<?php echo number_format($value['IngresosVtaAuto'], 2, '.', ','); ?>" ></td>
                 </tr>
                 <tr>
                     <td>Total Ingreso</td>
                     <?php $suma_total_ingreso = $value['IngresosAlquiler'] + $value['IngresosVtaAuto']; ?>
-                    <td><input id="t2_total_ingresos" class="form-control" readonly type="text" value="<?php echo number_format($suma_total_ingreso, 2, '.', ''); ?>" ></td>
+                    <td><input id="t2_total_ingresos" class="form-control" readonly type="text" value="<?php echo number_format($suma_total_ingreso, 2, '.', ','); ?>" ></td>
                 </tr>
                 <tr>
                     <td>Revenue Mensual</td>
-                    <td><input id="t2_revenue_mensual" class="form-control" readonly type="text" value="<?php echo number_format($value['MargenRetornoMensual'], 2, '.', ''); //number_format($revenue_mensual, 2, '.', ''); ?>" ></td>
+                    <?php 
+                    
+                    $suma_total_ingreso = $value['IngresosAlquiler'] + $value['IngresosVtaAuto']; 
+                    $rev_mensual = $suma_total_ingreso / $value['Meses'];
+                    
+                    ?>
+                    <td><input id="t2_revenue_mensual" class="form-control" readonly type="text" value="<?php echo number_format($rev_mensual, 2, '.', ','); //number_format($revenue_mensual, 2, '.', ','); ?>" ></td>
                 </tr>
                 <tr>
                     <td>Revenue Per Day</td>
-                    <td><input id="t2_revenue_per_day" class="form-control" readonly type="text" value="<?php echo number_format($value['DiasFS'], 2, '.', ''); ?>" ></td>
+                    <?php 
+                    
+                    $suma_total_ingreso = $value['IngresosAlquiler'] + $value['IngresosVtaAuto']; 
+                    $rev_day = $suma_total_ingreso / $value['DiasRental'];
+
+                    ?>
+                    <td><input id="t2_revenue_per_day" class="form-control" readonly type="text" value="<?php echo number_format($rev_day, 2, '.', ','); ?>" ></td>
                 </tr>
 
                 <tr>
                     <td>Costos </td>
-                    <td><?php //echo number_format($value['OtrosCostos'], 2, '.', ''); ?></td>
+                    <td><?php //echo number_format($value['OtrosCostos'], 2, '.', ','); ?></td>
                 </tr>
                 <tr>
                     <td>Total Costos</td>
-                    <td><?php echo number_format($value['TOTALCOSTOS'], 2, '.', ''); ?></td>
+                    <td><?php echo number_format($value['TOTALCOSTOS'], 2, '.', ','); ?></td>
                 </tr>
                 <tr>
                     <td>Intereses</td>
-                    <td><?php echo number_format($value['Intereses'], 2, '.', ''); ?></td>
+                    <td><?php echo number_format($value['Intereses'], 2, '.', ','); ?></td>
                 </tr>
                 <tr>
                     <td>Seguro</td>
-                    <td><?php echo number_format($value['Seguro'], 2, '.', ''); ?></td>
+                    <td><?php echo number_format($value['Seguro'], 2, '.', ','); ?></td>
                 </tr>
                 <tr>
                     <td>Depreciacion</td>
-                    <td><?php echo number_format($value['DEPRECIACIONACUMULADA'], 2, '.', ''); ?></td>
+                    <td><?php echo number_format($value['DEPRECIACIONACUMULADA'], 2, '.', ','); ?></td>
                 </tr>
                 <tr>
                     <td>Gasto Administrativos</td>
-                    <td><?php echo number_format($value['GastoAdmon'], 2, '.', ''); ?></td>
+                    <td><?php echo number_format($value['GastoAdmon'], 2, '.', ','); ?></td>
                 </tr>
                 <tr>
                     <td>Total costo y gastos</td><!-- H29 -->
                     <?php $total_costos_gastos = $value['OtrosCostos'] + $value['TOTALCOSTOS'] + $value['Intereses'] + $value['Seguro'] + $value['DEPRECIACIONACUMULADA'] + $value['GastoAdmon']; ?>
-                    <?php $total_costos_gastos = number_format($total_costos_gastos, 2, '.', '');  ?>
+                    <?php $total_costos_gastos = number_format($total_costos_gastos, 2, '.', ',');  ?>
                     <td><input readonly id="t2_total_cos_gast" value="<?php echo $total_costos_gastos; ?>" class="form-control"></td>
                 </tr>
 
                 <tr>
                     <td>Contrib. Contable Neta</td>
-                    <td><input readonly id="t2_cont_con_net" value="<?php echo number_format($value['ContribucionContable'], 2, '.', '');  ?>" class="form-control"></td>
+                    <td><input readonly id="t2_cont_con_net" value="<?php echo number_format($value['TotalContribucionContable'] - $value['PRECIOVENTA'], 2, '.', ',');  ?>" class="form-control"></td>
                 </tr>
                 <tr>
                     <td>Precio Venta Estimado</td>
-                    <td><input readonly id="t2_pr_ven" value="<?php echo number_format($value['PRECIOVENTA'], 2, '.', ''); ?>" class="form-control"></td>
+                    <td><input readonly id="t2_pr_ven" value="<?php echo number_format($value['PRECIOVENTA'], 2, '.', ','); ?>" class="form-control"></td>
                 </tr>
                 <tr>
                     <td>Total Contribu. Contable Estimado</td>
-                    <td><input readonly value="<?php echo number_format($value['TotalContribucionContable'], 2, '.', ''); ?>" id="t2_cont_con_est" class="form-control"> </td>
+                    <td><input readonly value="<?php echo number_format($value['TotalContribucionContable'], 2, '.', ','); ?>" id="t2_cont_con_est" class="form-control"> </td>
                 </tr>
                 <tr>
                     <td>% Margen Retorno Inversión Estimado</td>
-                    <td><input readonly type="text" id="t2_margen_retorno_inversion" value="<?php echo number_format($margen_retorno_inversion, 2, '.', ''); ?>" class="form-control" ></td>
+                    <?php $marge_retorno_inversion = $value['MargenRetornoMensual']*$value['Meses']; ?>
+                    <td><input readonly type="text" id="t2_margen_retorno_inversion" value="<?php echo number_format($marge_retorno_inversion * $value['CostoVehiculo'], 2, '.', ','); ?>" class="form-control" ></td>
                 </tr>
                 <tr>
                     <td>% Margen Retorno Mensual Estimado (MRM)</td>
-                    <td><input type="text" id="t2_margen_retorno_mensual" value="<?php echo number_format($value['MargenRetornoMensual'], 2, '.', ''); ?>" class="form-control" onkeyup="margen_retorno()"></td>
+                    <td><input type="text" id="t2_margen_retorno_mensual" value="<?php echo number_format($value['MargenRetornoMensual'], 2, '.', ','); ?>" class="form-control" onkeyup="margen_retorno()"></td>
+                </tr>
+                <tr>
+                    <td>Cashflow</td>
+                    <td><b><?php echo '$ ' . $cashflow; ?></b></td>
                 </tr>
             </table>
     <?php } 
 
     }elseif (isset($_POST['tabla']) && $_POST['tabla'] ==3) {
     
-        foreach ($autos_id as $key => $value) { ?>
+        foreach ($autos_id as $key => $value) { 
+            
+            $suma_total_ingreso = number_format($value['TotaldeIngresos'] + $value['IngresosVtaAuto'], 2, '.', ',');
+            $suma_total_ingreso = number_format((float)$suma_total_ingreso, 2, '.', ',');
+            $cashflow = ($suma_total_ingreso + $value['PRECIOVENTA']) - ($value['TOTALCOSTOS'] + $value['Intereses'] + $value['Seguro'] + $value['GastoAdmon'] + $value['CostoVehiculo'] + $value['ITBM']);
+            $cashflow = number_format((float)$cashflow, 2, '.', ',');
+            
+            ?>
 
             <?php $total_costos_gastos = $value['OtrosCostos'] + $value['TOTALCOSTOS'] + $value['Intereses'] + $value['Seguro'] + $value['DEPRECIACIONACUMULADA'] + $value['GastoAdmon']; ?>
 
@@ -299,7 +360,11 @@
                 </tr>
                 <tr>
                     <td>Costo auto</td>
-                    <td><?php echo number_format($value['CostoVehiculo'], 2, '.', ''); ?></td>
+                    <td><?php echo number_format($value['CostoVehiculo'], 2, '.', ','); ?></td>
+                </tr>
+                <tr>
+                    <td>Costo auto con impuesto</td>
+                    <td><?php echo '$ '.number_format($value['CostoVehiculo']+$value['ITBM'], 2, '.', ','); ?></td>
                 </tr>
                 <tr>
                     <td>Precio Flota Actual</td> <!-- K13 -->
@@ -327,11 +392,11 @@
                 <tr>
                     <td>Total Ingreso</td><!-- K19 -->
                     <?php $suma_total_ingreso = $value['IngresosAlquiler'] + $value['IngresosVtaAuto']; ?>
-                    <td><input id="t3_total_ingresos" class="form-control" readonly type="text" value="<?php echo number_format($suma_total_ingreso, 2, '.', ''); ?>" ></td>
+                    <td><input id="t3_total_ingresos" class="form-control" readonly type="text" value="<?php echo number_format($suma_total_ingreso, 2, '.', ','); ?>" ></td>
                 </tr>
                 <tr>
                     <td>Revenue Mensual</td><!-- K21 -->
-                    <td><input onkeyup="k21()" id="t3_revenue_mensual" class="form-control" type="text" value="<?php echo number_format($value['MargenRetornoMensual'], 2, '.', ''); ?>" ></td>
+                    <td><input onkeyup="k21()" id="t3_revenue_mensual" class="form-control" type="text" value="<?php echo number_format($value['MargenRetornoMensual'], 2, '.', ','); ?>" ></td>
                 </tr>
                 <tr>
                     <td>Revenue Per Day</td>
@@ -340,27 +405,27 @@
 
                 <tr>
                     <td>Costos</td>
-                    <td><?php //echo number_format($value['OtrosCostos'], 2, '.', ''); ?></td>
+                    <td><?php //echo number_format($value['OtrosCostos'], 2, '.', ','); ?></td>
                 </tr>
                 <tr>
                     <td>Total Costos</td>
-                    <td><?php echo number_format($value['TOTALCOSTOS'], 2, '.', ''); ?></td>
+                    <td><?php echo number_format($value['TOTALCOSTOS'], 2, '.', ','); ?></td>
                 </tr>
                 <tr>
                     <td>Intereses</td>
-                    <td><?php echo number_format($value['Intereses'], 2, '.', ''); ?></td>
+                    <td><?php echo number_format($value['Intereses'], 2, '.', ','); ?></td>
                 </tr>
                 <tr>
                     <td>Seguro</td>
-                    <td><?php echo number_format($value['Seguro'], 2, '.', ''); ?></td>
+                    <td><?php echo number_format($value['Seguro'], 2, '.', ','); ?></td>
                 </tr>
                 <tr>
                     <td>Depreciacion</td>
-                    <td><?php echo number_format($value['DEPRECIACIONACUMULADA'], 2, '.', ''); ?></td>
+                    <td><?php echo number_format($value['DEPRECIACIONACUMULADA'], 2, '.', ','); ?></td>
                 </tr>
                 <tr>
                     <td>Gasto Administrativos</td>
-                    <td><?php echo number_format($value['GastoAdmon'], 2, '.', ''); ?></td>
+                    <td><?php echo number_format($value['GastoAdmon'], 2, '.', ','); ?></td>
                 </tr>
                 <tr>
                     <td>Accesorios</td><!-- K30 -->
@@ -368,35 +433,46 @@
                 </tr>
                 <tr>
                     <td>Total costo y gastos</td><!-- K31 -->
-                    <td><input readonly id="t3_total_cos_gast" value="<?php echo $total_costos_gastos; ?>" class="form-control"></td>
+                    <td><input readonly id="t3_total_cos_gast" value="<?php echo number_format($total_costos_gastos, 2, '.', ','); ?>" class="form-control"></td>
                 </tr>
 
                 <tr>
                     <td>Contrib. Contable Neta</td><!-- K33 -->
-                    <td><input readonly id="t3_cont_con_net" value="<?php echo number_format($value['ContribucionContable'], 2, '.', '');  ?>" class="form-control"></td>
+                    <td><input readonly id="t3_cont_con_net" value="<?php echo number_format($value['ContribucionContable'], 2, '.', ',');  ?>" class="form-control"></td>
                 </tr>
                 <tr>
                     <td>Precio Venta Estimado</td><!-- K35 -->
-                    <td><input onkeyup="k35()" id="t3_estimado_precio_venta" value="<?php echo $value['PRECIOVENTA']; ?>" class="form-control"></td>
+                    <td><input onkeyup="k35()" id="t3_estimado_precio_venta" value="<?php echo number_format($value['PRECIOVENTA'], 2, '.', ','); ?>" class="form-control"></td>
                 </tr>
                 <tr>
                     <td>Total Contribu. Contable Estimado</td><!-- K37 -->
-                    <td><input readonly id="t3_cont_con_est" value="<?php echo $value['TotalContribucionContable']; ?>" class="form-control"></td>
+                    <td><input readonly id="t3_cont_con_est" value="<?php echo number_format($value['TotalContribucionContable'], 2, '.', ','); ?>" class="form-control"></td>
                 </tr>
                 <tr>
                     <td>% Margen Retorno Inversión Estimado</td><!-- K39 -->
-                    <td><input readonly type="text" id="t3_margen_retorno_inversion" value="<?php echo number_format($value['MargenRetorno'], 2, '.', ''); ?>" class="form-control" ></td>
+                    <td><input readonly type="text" id="t3_margen_retorno_inversion" value="<?php echo number_format($value['MargenRetorno'], 2, '.', ','); ?>" class="form-control" ></td>
                 </tr>
                 <tr>
                     <td>% Margen Retorno Mensual Estimado (MRM)</td><!-- K41 -->
                     <td><input readonly type="text" id="t3_margen_retorno_mensual_estimado" value="<?php echo $value['MargenRetornoMensual']; ?>" class="form-control" ></td>
+                </tr>
+                <tr>
+                    <td>Cashflow</td>
+                    <td><b><?php echo '$ ' . $cashflow; ?></b></td>
                 </tr>
             </table>
     <?php } 
 
     }elseif (isset($_POST['tabla']) && $_POST['tabla'] ==4) {
     
-        foreach ($autos_id_vendidos as $key => $value) { ?>
+        foreach ($autos_id_vendidos as $key => $value) { 
+            
+            $suma_total_ingreso = number_format($value['TotaldeIngresos'] + $value['IngresosVtaAuto'], 2, '.', ',');
+            $suma_total_ingreso = number_format((float)$suma_total_ingreso, 2, '.', ',');
+            $cashflow = ($suma_total_ingreso + $value['PRECIOVENTA']) - ($value['TOTALCOSTOS'] + $value['Intereses'] + $value['Seguro'] + $value['GastoAdmon'] + $value['CostoVehiculo'] + $value['ITBM']);
+            $cashflow = number_format((float)$cashflow, 2, '.', ',');
+            
+            ?>
 
             <?php $total_costos_gastos = $value['OtrosCostos'] + $value['TOTALCOSTOS'] + $value['Intereses'] + $value['Seguro'] + $value['DEPRECIACIONACUMULADA'] + $value['GastoAdmon']; ?>
 
@@ -415,7 +491,11 @@
                 </tr>
                 <tr>
                     <td>Costo auto</td>
-                    <td><?php echo number_format($value['CostoVehiculo'], 2, '.', ''); ?></td>
+                    <td><?php echo number_format($value['CostoVehiculo'], 2, '.', ','); ?></td>
+                </tr>
+                <tr>
+                    <td>Costo auto con impuesto</td>
+                    <td><?php echo '$ '.number_format($value['CostoVehiculo']+$value['ITBM'], 2, '.', ','); ?></td>
                 </tr>
                 <tr>
                     <td>Precio Flota Actual</td> <!-- K13 -->
@@ -432,7 +512,7 @@
                 </tr>
                 <tr>
                     <td>Ingreso alquiler</td><!-- K17 -->
-                    <td><?php echo $value['IngresosAlquiler']; ?></td>
+                    <td><?php echo number_format($value['IngresosAlquiler'], 2, '.', ','); ?></td>
                 </tr>
 
                 <tr>
@@ -443,11 +523,11 @@
                 <tr>
                     <td>Total Ingreso</td><!-- K19 -->
                     <?php $suma_total_ingreso = $value['IngresosAlquiler'] + $value['IngresosVtaAuto']; ?>
-                    <td><?php echo number_format($suma_total_ingreso, 2, '.', ''); ?></td>
+                    <td><?php echo number_format($suma_total_ingreso, 2, '.', ','); ?></td>
                 </tr>
                 <tr>
                     <td>Revenue Mensual</td><!-- K21 -->
-                    <td><?php echo number_format($value['MargenRetornoMensual'], 2, '.', ''); ?></td>
+                    <td><?php echo number_format($value['MargenRetornoMensual'], 2, '.', ','); ?></td>
                 </tr>
                 <tr>
                     <td>Revenue Per Day</td>
@@ -456,27 +536,27 @@
 
                 <tr>
                     <td>Costos </td>
-                    <td><?php //echo number_format($value['OtrosCostos'], 2, '.', ''); ?></td>
+                    <td><?php //echo number_format($value['OtrosCostos'], 2, '.', ','); ?></td>
                 </tr>
                 <tr>
                     <td>Total Costos</td>
-                    <td><?php echo number_format($value['TOTALCOSTOS'], 2, '.', ''); ?></td>
+                    <td><?php echo number_format($value['TOTALCOSTOS'], 2, '.', ','); ?></td>
                 </tr>
                 <tr>
                     <td>Intereses</td>
-                    <td><?php echo number_format($value['Intereses'], 2, '.', ''); ?></td>
+                    <td><?php echo number_format($value['Intereses'], 2, '.', ','); ?></td>
                 </tr>
                 <tr>
                     <td>Seguro</td>
-                    <td><?php echo number_format($value['Seguro'], 2, '.', ''); ?></td>
+                    <td><?php echo number_format($value['Seguro'], 2, '.', ','); ?></td>
                 </tr>
                 <tr>
                     <td>Depreciacion</td>
-                    <td><?php echo number_format($value['DEPRECIACIONACUMULADA'], 2, '.', ''); ?></td>
+                    <td><?php echo number_format($value['DEPRECIACIONACUMULADA'], 2, '.', ','); ?></td>
                 </tr>
                 <tr>
                     <td>Gasto Administrativos</td>
-                    <td><?php echo number_format($value['GastoAdmon'], 2, '.', ''); ?></td>
+                    <td><?php echo number_format($value['GastoAdmon'], 2, '.', ','); ?></td>
                 </tr>
                 <tr>
                     <td>Accesorios</td><!-- K30 -->
@@ -484,28 +564,32 @@
                 </tr>
                 <tr>
                     <td>Total costo y gastos</td><!-- K31 -->
-                    <td><?php echo $total_costos_gastos; ?>></td>
+                    <td><?php echo number_format($total_costos_gastos, 2, '.', ','); ?></td>
                 </tr>
 
                 <tr>
                     <td>Contrib. Contable Neta</td><!-- K33 -->
-                    <td><?php echo number_format($value['ContribucionContable'], 2, '.', '');  ?></td>
+                    <td><?php echo number_format($value['ContribucionContable'], 2, '.', ',');  ?></td>
                 </tr>
                 <tr>
                     <td>Precio Venta Estimado</td><!-- K35 -->
-                    <td><?php echo $value['PRECIOVENTA']; ?></td>
+                    <td><?php echo number_format($value['PRECIOVENTA'], 2, '.', ','); ?></td>
                 </tr>
                 <tr>
                     <td>Total Contribu. Contable Estimado</td><!-- K37 -->
-                    <td><?php echo $value['TotalContribucionContable']; ?></td>
+                    <td><?php echo number_format($value['TotalContribucionContable'], 2, '.', ','); ?></td>
                 </tr>
                 <tr>
                     <td>% Margen Retorno Inversión Estimado</td><!-- K39 -->
-                    <td><?php echo number_format($value['MargenRetorno'], 2, '.', ''); ?></td>
+                    <td><?php echo number_format($value['MargenRetorno'], 2, '.', ','); ?></td>
                 </tr>
                 <tr>
                     <td>% Margen Retorno Mensual Estimado (MRM)</td><!-- K41 -->
-                    <td><?php echo $value['MargenRetornoMensual']; ?></td>
+                    <td><?php echo number_format($value['MargenRetornoMensual'], 2, '.', ','); ?></td>
+                </tr>
+                <tr>
+                    <td>Cashflow</td>
+                    <td><b><?php echo '$ ' . $cashflow; ?></b></td>
                 </tr>
             </table>
     <?php } 

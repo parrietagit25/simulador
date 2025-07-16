@@ -36,7 +36,7 @@
                     $todos_autos_instance = new Simulacion();
                     $autos = $todos_autos_instance->TodasUnidades();
                     foreach ($autos as $key => $value) { ?>
-                        <option value="<?php echo $value['Unidad']; ?>" style="color:black !important"><?php echo $value['Meses'].'M '.$value['Unidad'].' - '.$value['Kilometraje']. ' KM ' . $value['Company']. ' '.$value['CustomerFirstName'].' '.$value['CustomerLastName']; ?></option>
+                        <option value="<?php echo $value['Unidad']; ?>" style="color:black !important"><?php echo $value['Meses'].'M '.$value['Unidad'].' - '.$value['Kilometraje']. ' KM ' . utf8_decode($value['Company']). ' '.utf8_decode($value['CustomerFirstName']).' '.utf8_decode($value['CustomerLastName']); ?></option>
                 <?php } ?>
             </select>
             <br>
@@ -400,7 +400,7 @@
                     $todos_autos_historico = new Simulacion();
                     $autos = $todos_autos_historico->TodasUnidadesVendidas();
                     foreach ($autos as $key => $value) { ?>
-                        <option value="<?php echo $value['Unidad']; ?>" style="color:black !important"><?php echo $value['Meses'].'M '.$value['Unidad'].' - '.$value['Kilometraje']. ' KM'.' - '.$value['Modelo']; ?></option>
+                        <option value="<?php echo $value['Unidad']; ?>" style="color:black !important"><?php echo $value['Meses'].'M '.$value['Unidad'].' - '.$value['Kilometraje']. ' KM'.' - '.$value['Modelo'].' - '.date('Y', strtotime($value['FechaVenta'])); ?></option>
                 <?php } ?>
             </select>
             <br>
